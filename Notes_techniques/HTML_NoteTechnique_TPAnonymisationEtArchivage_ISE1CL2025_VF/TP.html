@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Techniques - TP d'Anonymisation et d'Archivage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logos">
+                    <img src="img/lien_meco.jpg" alt="Ministère de l'Economie" class="logo">
+                    <img src="img/logo_ansd.jpg" alt="ANSD" class="logo">
+                    <img src="img/logo_ensae.jpg" alt="ENSAE" class="logo">
+                </div>
+                <h1 class="site-title">Note Technique - TP d'Anonymisation et d'Archivage</h1>
+                <h2 class="site-subtitle">Déploiement local d'un portail NADA avec préparation via Nesstar Publisher</h2>
+            </div>
+            <nav class="main-nav">
+                <button id="menuToggle" class="menu-toggle">Menu</button>
+                <ul id="navMenu" class="nav-menu">
+                    <li><a href="#accueil" class="active">Accueil</a></li>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#partie1">Préparation de l'environnement</a></li>
+                    <li><a href="#partie2">Production documentaire</a></li>
+                    <li><a href="#partie3">Intégration NADA</a></li>
+                    <li><a href="#conclusion">Conclusion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="search-container container">
+        <input type="text" id="searchInput" placeholder="Rechercher dans le contenu...">
+        <button id="searchButton">Rechercher</button>
+    </div>
+
+    <main class="main-content">
+        <section id="accueil" class="section active">
+            <div class="container">
+                <h2>Bienvenue aux notes techniques du TP</h2>
+                <p>Ce site présente les notes techniques détaillées pour vous guider à travers le TP d'Anonymisation et d'Archivage.</p>
+                <p> Ce travail a été réalisé par Khadidiatou Coulibaly, Hildegarde Edima Biyenda, Ameth Faye, Awa Diaw, Khadidiatou Diakhaté, Ange Emilson Rayan Raherinasolo, Tamsir Ndong et Alioune Abdou Salam Kane, élèves en ISE1 cycle long</p>
+                <p>Utilisez la navigation pour accéder aux différentes sections ou la fonction de recherche pour trouver rapidement une information spécifique.</p>
+                
+                <div class="info-box">
+                    <h3>À propos de ce TP</h3>
+                    <p>Ce travail pratique s'inscrit dans le cadre du cours sur l'anonymisation et l'archivage des données dispensé par M. MANE. Il vise à familiariser les étudiants avec deux outils professionnels : NADA, un portail web de diffusion de microdonnées, et Nesstar Publisher, un logiciel de production documentaire au format DDI XML.</p>
+                    
+                    <div class="process-diagram">
+                        <h4>Schéma synthétique du processus</h4>
+                        <ol class="process-steps">
+                            <li>Installer WAMP</li>
+                            <li>Télécharger/déployer NADA</li>
+                            <li>Créer base MySQL vide (nada)</li>
+                            <li>Configurer le fichier database.php</li>
+                            <li>Lancer NADA (Install Database)</li>
+                            <li>Préparer enquête dans Nesstar Publisher</li>
+                            <li>Exporter DDI XML + fichiers</li>
+                            <li>Importer dans NADA (admin panel)</li>
+                            <li>Portail consultable avec enquêtes archivées</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="introduction" class="section">
+            <div class="container">
+                <h2>Introduction</h2>
+                <p>Ce travail pratique s'inscrit dans le cadre du cours sur l'anonymisation et l'archivage des données. Il vise à familiariser les étudiants avec deux outils professionnels : NADA, un portail web de diffusion de microdonnées, et Nesstar Publisher, un logiciel de production documentaire au format DDI XML.</p>
+                
+                <div class="objectives-box">
+                    <h3>Objectifs du TP</h3>
+                    <ul class="objectives-list">
+                        <li>Mettre en place localement une plateforme NADA (National Data Archive) pour la documentation, la diffusion et l'archivage d'enquêtes statistiques.</li>
+                        <li>Préparer les métadonnées des enquêtes à l'aide de Nesstar Publisher au format DDI XML.</li>
+                        <li>Importer ces métadonnées et fichiers associés dans le portail NADA pour obtenir un catalogue d'enquêtes consultable en ligne.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="partie1" class="section">
+            <div class="container">
+                <h2>Partie 1 : Préparation de l'environnement local</h2>
+                
+                <div class="step">
+                    <h3>1. Installation de WAMP Server</h3>
+                    <p>NADA étant une application PHP, il requiert un environnement serveur incluant Apache, PHP et MySQL.</p>
+                    <ul>
+                        <li>Télécharger WAMP depuis <a href="https://www.wampserver.com/" target="_blank">https://www.wampserver.com/</a></li>
+                        <li>Lancer l'installation avec les paramètres par défaut.</li>
+                        <li>Vérifier que le serveur est en marche (icône verte) dans la barre des tâches.</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3>2. Téléchargement et déploiement de NADA</h3>
+                    <ul>
+                        <li>Aller sur le site officiel <a href="https://nada.ihsn.org" target="_blank">https://nada.ihsn.org</a><br>
+                        Prendre la version stable : 5.4.1</li>
+                        <li>Télécharger le fichier Source code.zip.</li>
+                        <li>Décompresser ce fichier.</li>
+                        <li>Copier le dossier décompressé dans :<br>
+                        C:\wamp64\www\ (ou htdocs si vous utilisez XAMPP).</li>
+                        <li>Renommer ce dossier en nada.</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3>3. Création d'une base de données vide</h3>
+                    <p>Ici, il s'agit de fournir à NADA une base MySQL dans laquelle il pourra installer ses propres tables.</p>
+                    <h4>Étapes :</h4>
+                    <ul>
+                        <li>Aller sur <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a></li>
+                        <li>Se connecter (utilisateur : root, mot de passe vide par défaut).</li>
+                        <li>Créer une base de données appelée nada, avec le collationnement utf8_general_ci.</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h3>4. Configuration de NADA</h3>
+                    <p>Le but est de connecter NADA à la base de données créée.</p>
+                    <h4>Étapes :</h4>
+                    <ol>
+                        <li>Aller dans le dossier :<br>
+                        C:\wamp64\www\nada\application\config</li>
+                        <li>Faire une copie du fichier database.sample.php → la nommer database.php.</li>
+                        <li>Ouvrir database.php dans Visual Studio Code.</li>
+                        <li>Modifier les lignes surlignées :</li>
+                    </ol>
+                    <div class="code-block">
+                        <pre><code>$db['default'] = array(
+    'hostname' => 'localhost',
+    <span class="highlight">'username' => 'root',</span>
+    'password' => '',
+    <span class="highlight">'database' => 'nada',</span>
+    'dbdriver' => 'mysqli',
+    ...
+);</code></pre>
+                    </div>
+                    <ol start="5">
+                        <li>Enregistrer les modifications.</li>
+                    </ol>
+                </div>
+                
+                <div class="step">
+                    <h3>5. Lancement initial de NADA et création des tables</h3>
+                    <h4>Étapes :</h4>
+                    <ul>
+                        <li>Ouvrir un navigateur et aller à :<br>
+                        <a href="http://localhost/nada" target="_blank">http://localhost/nada</a></li>
+                        <li>Une page s'affiche, détecte l'absence de tables et propose un bouton "Install Database".</li>
+                        <li>Cliquer sur ce bouton.</li>
+                        <li>Ensuite, remplir le formulaire de création d'un compte administrateur (nom, email, mot de passe).</li>
+                        <li>Valider pour terminer l'installation.</li>
+                    </ul>
+                    <h4>Résultat :</h4>
+                    <ul>
+                        <li>Les tables surveys, variables, resources, etc. sont automatiquement créées dans la base nada.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="partie2" class="section">
+            <div class="container">
+                <h2>Partie 2 : Production documentaire avec Nesstar Publisher</h2>
+                
+                <div class="info-box">
+                    <h3>Pourquoi utiliser Nesstar Publisher ?</h3>
+                    <p>Parce que NADA ne produit pas de documentation : il lit des fichiers produits en amont DDI XML, qui sont :</p>
+                    <ul>
+                        <li>des fichiers de description d'enquêtes au format standard international DDI (Data Documentation Initiative),</li>
+                        <li>générés via un outil comme Nesstar Publisher.</li>
+                    </ul>
+                </div>
+                
+                <h3>Étapes avec Nesstar Publisher</h3>
+                <ol>
+                    <li>Ouvrir Nesstar Publisher.</li>
+                    <li>Créer une nouvelle étude : File → New Study.</li>
+                    <li>Remplir les onglets :
+                        <ul>
+                            <li>Study Description : titre, objectifs, résumé.</li>
+                            <li>Methodology : mode de collecte, couverture.</li>
+                            <li>Data Files : ajout des fichiers (.dta, .csv, etc.).</li>
+                            <li>Variables : description des variables clés.</li>
+                        </ul>
+                    </li>
+                    <li>Ajouter les documents (rapport PDF, questionnaire scanné...).</li>
+                    <li>Exporter le projet :
+                        <ul>
+                            <li>Menu : File → Export → DDI</li>
+                            <li>Cela génère un fichier .xml (ex: my_survey.xml) + les documents associés.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h1>Interface de Nesstar Publisher</h1>
+                    <img src="img/interfacenesstar.png" alt="Interface image" class="ma-photo">
+                    <p>Dans notre cas, nous avons utilisé les informations renseignées concernant l’enquête « Suivi de l'impact de la Covid 19 sur les unités du secteur informel (2020) » de l’ANSD. La base ainsi que sa documentation sont disponibles à l’adresse suivante : <a href="https://anads.ansd.sn/index.php/catalog/310/study-description" target="_blank">https://anads.ansd.sn/index.php/catalog/310/study-description</a></p>
+                <div class="tool-focus">
+                    <h3>Nesstar Publisher en détails</h3>
+                    <p>C'est un logiciel développé par le Norwegian Social Science Data Services (NSD) pour documenter des enquêtes statistiques selon le standard DDI.</p>
+                    <h4>Fonctionnalités :</h4>
+                    <ul>
+                        <li>Saisie des informations méthodologiques d'une enquête.</li>
+                        <li>Description des fichiers de données et des variables.</li>
+                        <li>Ajout de ressources : questionnaires, manuels, rapports.</li>
+                        <li>Export en format DDI XML (compatible avec NADA, Redatam, etc.).</li>
+                    </ul>
+                    <p>Dans le TP :</p>
+                    <ul>
+                        <li>On utilise Nesstar Publisher pour créer la description complète d'une enquête.</li>
+                        <li>Une fois terminée, on exporte cette documentation → fichier .xml prêt pour NADA.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="partie3" class="section">
+            <div class="container">
+                <h2>Partie 3 : Intégration dans le portail NADA</h2>
+                <div class="slider-container">
+                    <div class="slider" id="slider">
+                      <img src="img/photo_1.jpg" alt="Image 1" class="slide-img">
+                      <img src="img/photo_2.jpg" alt="Image 2" class="slide-img">
+                      <img src="img/photo_3.jpg" alt="Image 3" class="slide-img">
+                      <img src="img/photo_4.jpg" alt="Image 4" class="slide-img">
+                      <img src="img/photo_5.jpg" alt="Image 5" class="slide-img">
+                      <img src="img/photo_6.jpg" alt="Image 6" class="slide-img">
+                    </div>
+                  </div>
+                <ol>
+                    <li>Aller à <a href="http://localhost/nada/admin" target="_blank">http://localhost/nada/admin</a></li>
+                    <li>Se connecter avec les identifiants administrateur.</li>
+                    <li>Dans le menu principal :
+                        <ul>
+                            <li>Aller dans Surveys → Import Survey.</li>
+                        </ul>
+                    </li>
+                    <li>Choisir l'option "Upload DDI".</li>
+                    <li>Sélectionner le fichier XML généré par Nesstar.</li>
+                    <li>Aller dans l'onglet Resources :
+                        <ul>
+                            <li>Ajouter les fichiers de données (.dta, .csv...),</li>
+                            <li>Ajouter les documents PDF (rapport, questionnaire).</li>
+                        </ul>
+                    </li>
+                    <li>Valider l'importation.</li>
+                </ol>
+                <p>L'enquête est maintenant accessible et visible dans le catalogue NADA.</p>
+                
+                <div class="result-table">
+                    <h3>À l'issue du TP, le portail contient :</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Élément</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Portail NADA</td>
+                                <td>Fonctionnel en local</td>
+                            </tr>
+                            <tr>
+                                <td>Base de données</td>
+                                <td>Initialisée avec les tables</td>
+                            </tr>
+                            <tr>
+                                <td>Interface administrateur</td>
+                                <td>Accessible</td>
+                            </tr>
+                            <tr>
+                                <td>Enquête importée</td>
+                                <td>Visible dans le catalogue</td>
+                            </tr>
+                            <tr>
+                                <td>Métadonnées en format DDI</td>
+                                <td>Correctement interprétées</td>
+                            </tr>
+                            <tr>
+                                <td>Fichiers joints (PDF, .dta)</td>
+                                <td>Téléchargeables</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="faq-box">
+                    <h3>À retenir !</h3>
+                    <div class="faq-item">
+                        <div class="question">Pourquoi créer une base vide ?</div>
+                        <div class="answer">NADA installe automatiquement ses tables à la première exécution.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="question">Pourquoi utiliser Nesstar Publisher ?</div>
+                        <div class="answer">Pour générer le fichier DDI XML structuré.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="question">Pourquoi importer dans NADA ?</div>
+                        <div class="answer">Pour créer automatiquement une fiche enquête dans le portail.</div>
+                    </div>
+                </div>
+                
+                <div class="tool-focus">
+                    <h3>Focus sur NADA</h3>
+                    <p>NADA (National Data Archive) est une plateforme web de diffusion des données statistiques. Elle permet aux utilisateurs de parcourir, rechercher, consulter, et télécharger des enquêtes documentées.</p>
+                    <p><strong>Mais NADA ne sert PAS à produire de la documentation.</strong><br>
+                    Il affiche les enquêtes déjà documentées dans un fichier DDI XML.</p>
+                    <h4>Dans le TP :</h4>
+                    <ul>
+                        <li>On installe NADA localement via WAMP.</li>
+                        <li>On importe les fichiers .xml produits ailleurs (avec Nesstar).</li>
+                        <li>NADA lit ces fichiers et les présente en ligne avec interface conviviale.</li>
+                    </ul>
+                    <div class="analogy">
+                        <p><strong>Analogie :</strong></p>
+                        <ul>
+                            <li>NADA = bibliothèque numérique (vitrine)</li>
+                            <li>DDI XML = livres déjà écrits (contenu)</li>
+                            <li>Nesstar Publisher = auteur/éditeur du contenu</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="section">
+            <div class="container">
+                <h2>Conclusion</h2>
+                <p>Ce travail pratique nous a permis de mettre en œuvre une chaîne complète de valorisation des données d'enquête, allant de la documentation technique via Nesstar Publisher jusqu'à la mise en ligne locale dans un portail NADA. Cette démarche, bien qu'orientée vers l'archivage et la diffusion, ne peut être considérée comme complète sans une réflexion sérieuse sur la protection des données à caractère personnel, en particulier dans les cas de microdonnées.</p>
+                <p>Ce TP illustre ainsi l'importance de penser l'archivage non seulement comme une solution technique (serveur, base, interface), mais aussi comme une pratique encadrée, intégrant les principes de la protection des données.</p>
+                
+                <div class="info-box">
+                    <h3>Documentation : focus sur les outils utilisés</h3>
+                    
+                    <div class="tool-description">
+                        <h4>1. phpMyAdmin facilite la création/gestion des bases de données</h4>
+                        <p><strong>Qu'est-ce que phpMyAdmin ?</strong><br>
+                        phpMyAdmin est une interface graphique web gratuite permettant d'interagir facilement avec un serveur MySQL ou MariaDB, sans avoir besoin de taper des requêtes SQL à la main.</p>
+                        <p><strong>Fonctionnalités principales :</strong></p>
+                        <ul>
+                            <li>Créer / supprimer des bases de données.</li>
+                            <li>Créer / modifier des tables.</li>
+                            <li>Gérer les utilisateurs et leurs droits.</li>
+                            <li>Exécuter des requêtes SQL manuellement.</li>
+                            <li>Exporter/importer des bases (en .sql, .csv, etc.).</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tool-description">
+                        <h4>2. DDI XML est un format ouvert pour la documentation d'enquêtes</h4>
+                        <p>Le DDI (Data Documentation Initiative) est un standard international basé sur XML pour décrire les métadonnées des enquêtes, des recensements et des fichiers de microdonnées.</p>
+                        <p><strong>Caractéristiques :</strong></p>
+                        <ul>
+                            <li>Structuré, lisible par machine.</li>
+                            <li>Documente les objectifs, la méthodologie, les variables, les fichiers, etc.</li>
+                            <li>Recommandé par les grandes institutions statistiques (OCDE, Banque mondiale, IHSN...).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 - Notes Techniques TP d'Anonymisation et d'Archivage</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
